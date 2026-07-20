@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Appraisal Result</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+<div class="grid-overlay" aria-hidden="true"></div>
+
+<header class="hero hero-small">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="eyebrow">Appraisal Result</p>
+      <h1>Estimated Price</h1>
+    </div>
+  </div>
+</header>
+
+<main class="content content-single">
+  <section class="panel form-panel">
+    <div class="panel-head">
+      <span class="panel-tag">TICKET</span>
+      <h2>Property Appraisal</h2>
+    </div>
+
+    <div class="result">
+      <div class="stamp">Preliminary Estimate</div>
+      <div class="result-value">${{ '{:,.0f}'.format(price) }}</div>
+      <p class="result-note">
+        {{ summary.area }} sqft &middot; {{ summary.bedrooms }}bd/{{ summary.bathrooms }}ba
+        &middot; {{ summary.floors }} floor(s) &middot; built {{ summary.yearBuilt }}
+        &middot; {{ summary.location }} &middot; {{ summary.condition }} condition
+        &middot; garage: {{ summary.garage }}
+      </p>
+    </div>
+
+    {% if low_confidence %}
+    <p class="spec-note">
+      LOW CONFIDENCE &mdash; the underlying {{ model_name }} model has a test R&sup2;
+      of {{ '%.4f'|format(test_r2) }}, close to zero. Treat this figure as a
+      demonstration of the pipeline rather than a trustworthy estimate.
+    </p>
+    {% endif %}
+
+    <a class="back-link" href="{{ url_for('index') }}">&larr; New appraisal</a>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>Trained with scikit-learn, served with Flask.</p>
+</footer>
+
+</body>
+</html>
